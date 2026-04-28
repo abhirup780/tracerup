@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "ABIF Trace Viewer",
+  "description": "A web-based AB1 Sanger Sequencing trace viewer built with React, Plotly, and Tailwind CSS. Features an interactive electropherogram, reverse complement, and sequence search.",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }
