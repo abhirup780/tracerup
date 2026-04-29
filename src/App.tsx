@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Upload, Download, Copy, Share2, Menu, AudioWaveform, ToggleLeft, ToggleRight, X, AlertTriangle, CheckCircle2, ExternalLink, Minus, Plus } from "lucide-react";
+import { Upload, Download, Copy, Share2, Menu, ToggleLeft, ToggleRight, X, AlertTriangle, CheckCircle2, ExternalLink, Minus, Plus } from "lucide-react";
+import { TracerupIcon } from "@/components/icons/TracerupIcon";
 import { parseABIF, ABIFData, getReverseComplement } from "@/lib/abif-parser";
 import { FileUploader } from "@/components/FileUploader";
 import { ChromatogramViewer } from "@/components/ChromatogramViewer";
@@ -91,7 +92,7 @@ export default function App() {
         <div className="p-5 xl:p-6 2xl:p-8 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 2xl:w-10 2xl:h-10 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-              <AudioWaveform className="w-5 h-5 2xl:w-6 2xl:h-6" />
+              <TracerupIcon className="w-5 h-5 2xl:w-6 2xl:h-6" />
             </div>
             <h1 className="font-bold text-gray-200 tracking-wide 2xl:text-xl">Tracerup</h1>
           </div>
@@ -242,7 +243,7 @@ export default function App() {
         <div className="md:hidden flex items-center justify-between p-4 border-b border-[#1e293b] bg-[#090B0F]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-              <AudioWaveform className="w-5 h-5" />
+              <TracerupIcon className="w-5 h-5" />
             </div>
             <h1 className="font-bold text-gray-200 tracking-wide">Tracerup</h1>
           </div>
@@ -261,7 +262,7 @@ export default function App() {
 
           {!data && !error && (
             <div className="flex flex-col items-center justify-center flex-1 min-h-[400px] 2xl:min-h-[600px] opacity-70">
-              <AudioWaveform className="w-16 h-16 2xl:w-24 2xl:h-24 text-gray-800 mb-4 2xl:mb-6" />
+              <TracerupIcon className="w-16 h-16 2xl:w-24 2xl:h-24 text-gray-800 mb-4 2xl:mb-6" />
               <p className="text-gray-500 2xl:text-lg">Upload a trace file from the sidebar to begin</p>
             </div>
           )}
