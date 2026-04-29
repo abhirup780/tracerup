@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
-import { ABIFData, getIupacCode } from "@/lib/abif-parser";
+import React, { useMemo, useState, useEffect } from "react";
+import { ABIFData, getIupacCode, getReverseComplement } from "@/lib/abif-parser";
 import { Search } from "lucide-react";
+import { MotifUploader, Motif } from "./MotifUploader";
 
 interface SequenceViewerProps {
   data: ABIFData;
@@ -86,6 +87,28 @@ export function SequenceViewer({
      return indices;
   }, [sequenceStr, searchQuery]);
 
+  const [selectedMotif, setSelectedMotif] = useState<Motif | null>(null);
+  const [showNoMatch, setShowNoMatch] = useState(false);
+
+  useEffect(() => {
+    if (searchQuery.length >= 2 && highlightIndices.size === 0) {
+      setShowNoMatch(true);
+      const timer = setTimeout(() => setShowNoMatch(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowNoMatch(false);
+    }
+  }, [searchQuery, highlightIndices.size]);
+
+  const handleMotifSelect = (motif: Motif) => {
+    setSelectedMotif(motif);
+    let query = motif.sequence;
+    if (motif.direction === 'R') {
+      query = getReverseComplement(query);
+    }
+    setSearchQuery(query);
+  };
+
   return (
     <div className="flex border border-gray-800 rounded-lg p-5 bg-[#0B0E14] flex-col mt-4 shadow-sm">
       <div className="flex items-center gap-3 mb-6 border-b border-gray-800 pb-4">
@@ -95,15 +118,25 @@ export function SequenceViewer({
         <div className="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded flex items-center tracking-widest">{sequenceStr.length} bases</div>
         
         <div className="ml-auto flex items-center gap-6">
+          <MotifUploader onMotifSelect={handleMotifSelect} selectedMotif={selectedMotif} />
+          
           <div className="relative group">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-emerald-500 transition-colors" />
             <input 
               type="text" 
               placeholder="Search sequence..." 
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={e => {
+                setSearchQuery(e.target.value);
+                setSelectedMotif(null);
+              }}
               className="bg-[#1A1D23] border border-gray-700 text-xs px-3 py-1.5 pl-9 rounded focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 text-gray-200 placeholder:text-gray-600 transition-all w-48"
             />
+            {showNoMatch && (
+              <div className="absolute top-full left-0 mt-2 bg-red-500/10 border border-red-500/20 text-red-500 font-semibold px-2 py-1 rounded text-[10px] whitespace-nowrap shadow-lg flex items-center gap-1.5 z-50 animate-in fade-in zoom-in duration-200">
+                 No match found
+              </div>
+            )}
           </div>
 
           <label className="flex items-center gap-2 cursor-pointer group select-none" onClick={() => setReverseComplement(!reverseComplement)}>

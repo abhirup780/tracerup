@@ -50,7 +50,8 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
        pos = seqStr.indexOf(query, pos + 1);
     }
     
-    if (matches.length === 1) {
+    if (matches.length > 0) {
+      // Zoom to the first match
       const matchIndex = matches[0];
       const middleBaseIndex = matchIndex + Math.floor(query.length / 2);
       if (data.peakPositions[middleBaseIndex] !== undefined) {
