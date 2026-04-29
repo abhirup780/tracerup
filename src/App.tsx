@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Upload, Download, Copy, Share2, Menu, AudioWaveform, ToggleLeft, ToggleRight, X, AlertTriangle, CheckCircle2, ExternalLink } from "lucide-react";
+import { Upload, Download, Copy, Share2, Menu, AudioWaveform, ToggleLeft, ToggleRight, X, AlertTriangle, CheckCircle2, ExternalLink, Minus, Plus } from "lucide-react";
 import { parseABIF, ABIFData, getReverseComplement } from "@/lib/abif-parser";
 import { FileUploader } from "@/components/FileUploader";
 import { ChromatogramViewer } from "@/components/ChromatogramViewer";
@@ -19,6 +19,7 @@ export default function App() {
   const [focusedBaseIndex, setFocusedBaseIndex] = useState<number | null>(null);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFileInfoExpanded, setIsFileInfoExpanded] = useState(true);
 
   const handleFileLoaded = useCallback((file: File, buffer: ArrayBuffer) => {
     try {
@@ -283,21 +284,32 @@ export default function App() {
                </div>
 
                {/* File Information Cards */}
-               <div className="bg-[#0B0E14] border border-gray-800 rounded-xl p-5 2xl:p-7">
-                 <div className="text-[12px] 2xl:text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 2xl:mb-6 flex items-center gap-2">
-                   <svg className="w-4 h-4 2xl:w-5 2xl:h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                   File Information
+               <div className="bg-[#0B0E14] border border-gray-800 rounded-xl p-5 2xl:p-7 transition-all duration-300">
+                 <div className={`flex items-center justify-between text-[12px] 2xl:text-sm font-bold text-gray-400 uppercase tracking-widest ${isFileInfoExpanded ? 'mb-4 2xl:mb-6' : ''}`}>
+                   <div className="flex items-center gap-2">
+                     <svg className="w-4 h-4 2xl:w-5 2xl:h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                     File Information
+                   </div>
+                   <button 
+                     onClick={() => setIsFileInfoExpanded(!isFileInfoExpanded)}
+                     className="text-gray-500 hover:text-gray-300 p-1 hover:bg-gray-800/50 rounded transition-colors"
+                     title={isFileInfoExpanded ? "Minimize" : "Expand"}
+                   >
+                     {isFileInfoExpanded ? <Minus className="w-4 h-4 2xl:w-5 2xl:h-5" /> : <Plus className="w-4 h-4 2xl:w-5 2xl:h-5" />}
+                   </button>
                  </div>
-                 <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 2xl:gap-5">
-                   <StatCard label="SAMPLE" value={fileName.split('.')[0]} />
-                   <StatCard label="LENGTH" value={`${stats.length} bp`} />
-                   <StatCard label="TRACE POINTS" value={stats.tracePoints.toLocaleString()} />
-                   <StatCard label="GC CONTENT" value={stats.gcContent} />
-                   <StatCard label="AVG QUALITY" value={stats.avgQuality} />
-                   <StatCard label=">Q20" value={stats.q20} />
-                   <StatCard label=">Q30" value={stats.q30} />
-                   <StatCard label="INSTRUMENT" value="ABIF Sequence Trace" />
-                 </div>
+                 {isFileInfoExpanded && (
+                   <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 2xl:gap-5 animate-in fade-in slide-in-from-top-2 duration-300">
+                     <StatCard label="SAMPLE" value={fileName.split('.')[0]} />
+                     <StatCard label="LENGTH" value={`${stats.length} bp`} />
+                     <StatCard label="TRACE POINTS" value={stats.tracePoints.toLocaleString()} />
+                     <StatCard label="GC CONTENT" value={stats.gcContent} />
+                     <StatCard label="AVG QUALITY" value={stats.avgQuality} />
+                     <StatCard label=">Q20" value={stats.q20} />
+                     <StatCard label=">Q30" value={stats.q30} />
+                     <StatCard label="INSTRUMENT" value="ABIF Sequence Trace" />
+                   </div>
+                 )}
                </div>
 
                {/* Electropherogram Plot */}
