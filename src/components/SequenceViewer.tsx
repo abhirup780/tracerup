@@ -130,32 +130,37 @@ export function SequenceViewer({
                 setSearchQuery(e.target.value);
                 setSelectedMotif(null);
               }}
-              className="bg-[#1A1D23] border border-gray-700 text-xs px-3 py-1.5 pl-9 rounded focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 text-gray-200 placeholder:text-gray-600 transition-all w-48"
+              className="bg-[#1A1D23] border border-gray-700 text-xs 2xl:text-sm px-3 py-1.5 2xl:py-2 pl-9 2xl:pl-10 rounded focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 text-gray-200 placeholder:text-gray-600 transition-all w-48 2xl:w-64"
             />
             {showNoMatch && (
-              <div className="absolute top-full left-0 mt-2 bg-red-500/10 border border-red-500/20 text-red-500 font-semibold px-2 py-1 rounded text-[10px] whitespace-nowrap shadow-lg flex items-center gap-1.5 z-50 animate-in fade-in zoom-in duration-200">
+              <div className="absolute top-full left-0 mt-2 bg-red-500/10 border border-red-500/20 text-red-500 font-semibold px-2 py-1 rounded text-[10px] 2xl:text-xs whitespace-nowrap shadow-lg flex items-center gap-1.5 z-50 animate-in fade-in zoom-in duration-200">
                  No match found
               </div>
             )}
           </div>
 
           <label className="flex items-center gap-2 cursor-pointer group select-none" onClick={() => setReverseComplement(!reverseComplement)}>
-            <div className={`w-8 h-4 rounded-full relative transition-colors ${reverseComplement ? 'bg-emerald-500' : 'bg-gray-700'}`}>
-              <div className={`absolute top-1 w-2 h-2 bg-white rounded-full transition-all ${reverseComplement ? 'right-1' : 'left-1'}`}></div>
+            <div className={`w-8 h-4 2xl:w-10 2xl:h-5 rounded-full relative transition-colors ${reverseComplement ? 'bg-emerald-500' : 'bg-gray-700'}`}>
+              <div className={`absolute top-1 w-2 h-2 2xl:w-3 2xl:h-3 bg-white rounded-full transition-all ${reverseComplement ? 'right-1' : 'left-1'}`}></div>
             </div>
-            <span className="text-xs text-gray-400 font-semibold uppercase tracking-wider group-hover:text-gray-200 transition-colors">Reverse Complement</span>
+            <span className="text-xs 2xl:text-sm text-gray-400 font-semibold uppercase tracking-wider group-hover:text-gray-200 transition-colors">Reverse Complement</span>
           </label>
         </div>
       </div>
       
-      <div className="font-mono text-[13px] tracking-[0.2em] select-auto">
+      <div className="font-mono text-[13px] 2xl:text-[15px] tracking-[0.2em] 2xl:tracking-[0.25em] select-auto">
         <div 
-          className="grid gap-x-2 gap-y-4 pb-2"
-          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}
+          className="grid gap-x-2 gap-y-4 2xl:gap-y-6 pb-2"
+          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(var(--block-width, 185px), 1fr))' }}
         >
+          {/* Inject a quick style to handle responsive custom property without adding external CSS */}
+          <style>{`
+            :root { --block-width: 185px; }
+            @media (min-width: 1536px) { :root { --block-width: 220px; } }
+          `}</style>
           {blocks.map((block, b_idx) => (
             <div key={b_idx} className="flex items-center">
-              <span className="text-gray-600 text-[10px] tracking-normal w-[36px] shrink-0 select-none font-sans text-right mr-3 opacity-50">{block.startIndex}</span>
+              <span className="text-gray-600 text-[10px] 2xl:text-xs tracking-normal w-[36px] 2xl:w-[44px] shrink-0 select-none font-sans text-right mr-3 2xl:mr-4 opacity-50">{block.startIndex}</span>
               <div className="flex">
                 {block.bases.map((char, i) => {
                   const globalIndex = block.startIndex - 1 + i;

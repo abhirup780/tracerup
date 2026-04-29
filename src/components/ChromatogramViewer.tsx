@@ -301,22 +301,22 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
   };
 
   return (
-    <div className={isFullscreen ? "fixed inset-0 z-[100] bg-[#0E1117] flex flex-col p-4 md:p-8" : "w-full h-full flex flex-col min-h-[350px] relative rounded-lg"}>
-      <div className={`w-full h-full flex flex-col relative bg-[#090B0F] border ${isFullscreen ? 'border-gray-700 shadow-2xl flex-1 rounded-xl overflow-hidden' : 'border-gray-800 min-h-[350px] rounded-lg'}`}>
+    <div className={isFullscreen ? "fixed inset-0 z-[100] bg-[#0E1117] flex flex-col p-4 md:p-8" : "w-full flex flex-col min-h-[350px] xl:min-h-[450px] 2xl:min-h-[600px] relative rounded-lg"}>
+      <div className={`w-full h-full flex flex-col relative bg-[#090B0F] border ${isFullscreen ? 'border-gray-700 shadow-2xl flex-1 rounded-xl overflow-hidden' : 'border-gray-800 min-h-[350px] xl:min-h-[450px] 2xl:min-h-[600px] rounded-lg'}`}>
         <div className="absolute top-2 left-2 z-10 flex gap-2">
-          <div className="flex items-center gap-3 bg-[#0B0E14]/90 backdrop-blur border border-gray-800 px-3 py-1.5 rounded text-[10px] uppercase font-bold tracking-wider text-gray-400">
-             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-[#22C55E]"></span>A <span className="lowercase font-normal text-gray-600">(Ade)</span></span>
-             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-[#3B82F6]"></span>C <span className="lowercase font-normal text-gray-600">(Cyto)</span></span>
-             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-[#94A3B8]"></span>G <span className="lowercase font-normal text-gray-600">(Gua)</span></span>
-             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-[#EF4444]"></span>T <span className="lowercase font-normal text-gray-600">(Thy)</span></span>
+          <div className="flex items-center gap-3 bg-[#0B0E14]/90 backdrop-blur border border-gray-800 px-3 py-1.5 rounded text-[10px] 2xl:text-xs uppercase font-bold tracking-wider text-gray-400">
+             <span className="flex items-center gap-1"><span className="w-2 h-2 2xl:w-2.5 2xl:h-2.5 rounded bg-[#22C55E]"></span>A <span className="lowercase font-normal text-gray-600">(Ade)</span></span>
+             <span className="flex items-center gap-1"><span className="w-2 h-2 2xl:w-2.5 2xl:h-2.5 rounded bg-[#3B82F6]"></span>C <span className="lowercase font-normal text-gray-600">(Cyto)</span></span>
+             <span className="flex items-center gap-1"><span className="w-2 h-2 2xl:w-2.5 2xl:h-2.5 rounded bg-[#94A3B8]"></span>G <span className="lowercase font-normal text-gray-600">(Gua)</span></span>
+             <span className="flex items-center gap-1"><span className="w-2 h-2 2xl:w-2.5 2xl:h-2.5 rounded bg-[#EF4444]"></span>T <span className="lowercase font-normal text-gray-600">(Thy)</span></span>
           </div>
           <button 
             type="button"
             onClick={() => setIsFullscreen(!isFullscreen)} 
-            className="bg-[#0B0E14]/90 backdrop-blur border border-gray-800 p-1.5 rounded text-gray-400 hover:text-white hover:bg-gray-800 transition-colors cursor-pointer"
+            className="bg-[#0B0E14]/90 backdrop-blur border border-gray-800 p-1.5 2xl:p-2 rounded text-gray-400 hover:text-white hover:bg-gray-800 transition-colors cursor-pointer"
             title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
           >
-            {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+            {isFullscreen ? <Minimize className="w-4 h-4 2xl:w-5 2xl:h-5" /> : <Maximize className="w-4 h-4 2xl:w-5 2xl:h-5" />}
           </button>
         </div>
         <Plot
@@ -333,7 +333,7 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
           modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
           displaylogo: false,
         }}
-        style={{ width: '100%', height: '100%', flex: 1, minHeight: isFullscreen ? '0' : '350px' }}
+        style={{ width: '100%', height: '100%', flex: 1, minHeight: isFullscreen ? '0' : '100%' }}
         useResizeHandler={true}
       />
       </div>
