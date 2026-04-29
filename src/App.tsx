@@ -18,6 +18,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [focusedBaseIndex, setFocusedBaseIndex] = useState<number | null>(null);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleFileLoaded = useCallback((file: File, buffer: ArrayBuffer) => {
     try {
@@ -79,13 +80,23 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-full bg-[#0E1117] text-gray-100 font-sans overflow-hidden selection:bg-emerald-500/30">
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150] md:hidden" onClick={() => setIsMobileMenuOpen(false)}></div>
+      )}
+
       {/* Sidebar */}
-      <aside className="w-72 xl:w-80 2xl:w-[26rem] border-r border-[#1e293b] bg-[#090B0F] hidden md:flex flex-col shrink-0 overflow-y-auto">
-        <div className="p-5 xl:p-6 2xl:p-8 flex items-center gap-3">
-          <div className="w-8 h-8 2xl:w-10 2xl:h-10 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-            <AudioWaveform className="w-5 h-5 2xl:w-6 2xl:h-6" />
+      <aside className={`w-72 xl:w-80 2xl:w-[26rem] border-r border-[#1e293b] bg-[#090B0F] flex-col shrink-0 overflow-y-auto ${isMobileMenuOpen ? 'flex fixed inset-y-0 left-0 z-[200] max-w-[85vw] animate-in slide-in-from-left w-full' : 'hidden'} md:flex md:relative`}>
+        <div className="p-5 xl:p-6 2xl:p-8 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 2xl:w-10 2xl:h-10 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+              <AudioWaveform className="w-5 h-5 2xl:w-6 2xl:h-6" />
+            </div>
+            <h1 className="font-bold text-gray-200 tracking-wide 2xl:text-xl">Tracerup</h1>
           </div>
-          <h1 className="font-bold text-gray-200 tracking-wide 2xl:text-xl">Tracerup</h1>
+          <button className="md:hidden text-gray-400 hover:text-white p-1" onClick={() => setIsMobileMenuOpen(false)}>
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         <div className="px-5 xl:px-6 2xl:px-8 pb-6 2xl:pb-8 flex flex-col gap-8 2xl:gap-12 flex-1">
@@ -226,6 +237,19 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#0E1117] h-full overflow-y-auto">
+        {/* Mobile Top Bar */}
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-[#1e293b] bg-[#090B0F]">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+              <AudioWaveform className="w-5 h-5" />
+            </div>
+            <h1 className="font-bold text-gray-200 tracking-wide">Tracerup</h1>
+          </div>
+          <button className="p-2 text-gray-400 hover:text-white" onClick={() => setIsMobileMenuOpen(true)}>
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
+
         {/* Header content only visible when data is loaded */}
         <div className="p-6 xl:p-8 2xl:p-12 max-w-[1400px] 2xl:max-w-none 2xl:mx-8 xl:mx-auto w-full flex flex-col gap-6 2xl:gap-8">
           {error && (
@@ -245,13 +269,15 @@ export default function App() {
             <div className="flex flex-col gap-6 2xl:gap-8 animate-in fade-in duration-500">
                {/* Head section */}
                <div className="flex justify-between items-start">
-                 <div>
-                   <h1 className="text-xl 2xl:text-3xl font-bold flex items-center gap-3">
-                     <span className="w-2.5 h-2.5 2xl:w-3.5 2xl:h-3.5 rounded-full bg-emerald-500"></span> 
+                 <div className="min-w-0">
+                   <h1 className="text-xl 2xl:text-3xl font-bold flex items-center gap-3 break-all sm:break-normal">
+                     <span className="w-2.5 h-2.5 2xl:w-3.5 2xl:h-3.5 rounded-full bg-emerald-500 shrink-0"></span> 
                      {fileName}
                    </h1>
-                   <div className="text-sm 2xl:text-base text-gray-500 mt-1 2xl:mt-2 ml-5 2xl:ml-6">
-                     {stats.length} bases • {stats.tracePoints.toLocaleString()} trace points
+                   <div className="text-sm 2xl:text-base text-gray-500 mt-1 2xl:mt-2 ml-5 2xl:ml-6 flex flex-wrap gap-1">
+                     <span>{stats.length} bases</span>
+                     <span className="hidden sm:inline">•</span>
+                     <span>{stats.tracePoints.toLocaleString()} trace points</span>
                    </div>
                  </div>
                </div>

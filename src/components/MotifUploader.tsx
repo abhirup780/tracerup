@@ -170,7 +170,7 @@ export function MotifUploader({ onMotifSelect, selectedMotif }: MotifUploaderPro
         </button>
 
         {isOpen && motifs.length > 0 && (
-          <div className="absolute top-full right-0 mt-1 w-64 bg-[#1A1D23] border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
+          <div className="absolute top-full left-0 md:left-auto md:right-0 mt-1 w-64 bg-[#1A1D23] border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
              <div className="p-2 border-b border-gray-800">
                <input 
                  type="text" 
