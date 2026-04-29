@@ -113,10 +113,10 @@ export function SequenceViewer({
     <div className="flex border border-gray-800 rounded-lg p-5 bg-[#0B0E14] flex-col mt-4 shadow-sm relative">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6 border-b border-gray-800 pb-4">
         <div className="flex items-center gap-3">
-          <span className="text-[12px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+          <span className="text-sm font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
             Sequence Track
           </span>
-          <div className="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded flex items-center tracking-widest">{sequenceStr.length} bases</div>
+          <div className="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded flex items-center tracking-widest">{sequenceStr.length} bases</div>
         </div>
         
         <div className="md:ml-auto flex flex-wrap items-center gap-4 w-full md:w-auto">
@@ -135,7 +135,7 @@ export function SequenceViewer({
               className="bg-[#1A1D23] border border-gray-700 text-xs 2xl:text-sm px-3 py-1.5 2xl:py-2 pl-9 2xl:pl-10 rounded focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 text-gray-200 placeholder:text-gray-600 transition-all w-full md:w-48 2xl:w-64"
             />
             {showNoMatch && (
-              <div className="absolute top-full left-0 mt-2 bg-red-500/10 border border-red-500/20 text-red-500 font-semibold px-2 py-1 rounded text-[10px] 2xl:text-xs whitespace-nowrap shadow-lg flex items-center gap-1.5 z-50 animate-in fade-in zoom-in duration-200">
+              <div className="absolute top-full left-0 mt-2 bg-red-500/10 border border-red-500/20 text-red-500 font-semibold px-2 py-1 rounded text-xs whitespace-nowrap shadow-lg flex items-center gap-1.5 z-50 animate-in fade-in zoom-in duration-200">
                  No match found
               </div>
             )}
@@ -145,12 +145,12 @@ export function SequenceViewer({
             <div className={`w-8 h-4 2xl:w-10 2xl:h-5 rounded-full relative transition-colors ${reverseComplement ? 'bg-emerald-500' : 'bg-gray-700'}`}>
               <div className={`absolute top-1 w-2 h-2 2xl:w-3 2xl:h-3 bg-white rounded-full transition-all ${reverseComplement ? 'right-1' : 'left-1'}`}></div>
             </div>
-            <span className="text-[10px] sm:text-xs 2xl:text-sm text-gray-400 font-semibold uppercase tracking-wider group-hover:text-gray-200 transition-colors">Reverse Complement</span>
+            <span className="text-xs 2xl:text-sm text-gray-400 font-semibold uppercase tracking-wider group-hover:text-gray-200 transition-colors">Reverse Complement</span>
           </label>
         </div>
       </div>
       
-      <div className="font-mono text-[13px] 2xl:text-[15px] tracking-[0.2em] 2xl:tracking-[0.25em] select-auto overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+      <div className="font-mono text-sm 2xl:text-base tracking-[0.2em] 2xl:tracking-[0.25em] select-auto overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
         <div 
           className="grid gap-x-2 gap-y-4 2xl:gap-y-6 pb-2"
           style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(var(--block-width, 185px), 1fr))' }}

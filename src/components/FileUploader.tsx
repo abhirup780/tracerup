@@ -57,7 +57,7 @@ export function FileUploader({ onFileLoaded, compact = false }: FileUploaderProp
             <UploadCloud className="w-5 h-5 text-slate-400 group-hover:text-emerald-400 transition-colors" />
           </div>
           <span className="text-xs text-slate-300 font-medium">Drop .ab1 file here</span>
-          <span className="text-[10px] text-slate-500 mt-1">or click to browse</span>
+          <span className="text-xs text-slate-500 mt-1">or click to browse</span>
         </div>
       </div>
     );

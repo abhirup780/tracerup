@@ -193,7 +193,7 @@ export function MotifUploader({ onMotifSelect, selectedMotif }: MotifUploaderPro
                     >
                       <div className="flex justify-between items-center text-xs font-semibold text-gray-200">
                         <span>{m.annotation}</span>
-                        <span className={`px-1.5 py-0.5 rounded text-[9px] ${m.direction === 'F' ? 'bg-blue-500/20 text-blue-400' : 'bg-red-500/20 text-red-400'}`}>{m.direction}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] ${m.direction === 'F' ? 'bg-blue-500/20 text-blue-400' : 'bg-red-500/20 text-red-400'}`}>{m.direction}</span>
                       </div>
                       <div className="text-[10px] font-mono text-gray-500">{m.sequence}</div>
                     </div>
@@ -201,10 +201,10 @@ export function MotifUploader({ onMotifSelect, selectedMotif }: MotifUploaderPro
                 )}
              </div>
              <div className="p-2 bg-[#12161E] border-t border-gray-700 flex justify-between items-center">
-                 <span className="text-[10px] text-gray-500">{motifs.length} motifs loaded</span>
+                 <span className="text-xs text-gray-500">{motifs.length} motifs loaded</span>
                  <button 
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                  className="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold"
                  >
                    Load New
                  </button>

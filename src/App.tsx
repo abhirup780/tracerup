@@ -104,12 +104,12 @@ export default function App() {
         <div className="px-5 xl:px-6 2xl:px-8 pb-6 2xl:pb-8 flex flex-col gap-8 2xl:gap-12 flex-1">
           {/* Load File Widget */}
           <div className="pt-2">
-            <h2 className="text-[10px] 2xl:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 2xl:mb-4">Load File</h2>
+            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 2xl:mb-4">Load File</h2>
             <FileUploader onFileLoaded={handleFileLoaded} compact={true} />
           </div>
 
           <div>
-            <h2 className="text-[10px] 2xl:text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 2xl:mb-4">Display Options</h2>
+            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 2xl:mb-4">Display Options</h2>
             <div className="space-y-4">
               <ToggleSetting 
                 label="Quality Scores" 
@@ -129,7 +129,7 @@ export default function App() {
           {showHeterozygous && (
             <div>
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-[10px] 2xl:text-xs font-bold text-gray-500 uppercase tracking-widest">Het. Threshold</h2>
+                <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Het. Threshold</h2>
                 <span className="text-xs 2xl:text-sm text-gray-400 font-mono">{hetThreshold.toFixed(2)}</span>
               </div>
               <input 
@@ -138,13 +138,13 @@ export default function App() {
                 onChange={(e) => setHetThreshold(parseFloat(e.target.value))}
                 className="w-full h-1 2xl:h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
               />
-              <div className="text-[9px] 2xl:text-[11px] text-gray-600 mt-1">Secondary/Primary peak ratio</div>
+              <div className="text-[10px] 2xl:text-[11px] text-gray-600 mt-1">Secondary/Primary peak ratio</div>
             </div>
           )}
 
           {data && (
             <div className="pt-2">
-               <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 text-[11px] 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors font-semibold shadow-sm"
+               <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 text-xs 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors font-semibold shadow-sm"
                  onClick={() => {
                    const selection = window.getSelection()?.toString();
                    let seqToBlast = "";
@@ -177,9 +177,9 @@ export default function App() {
 
           {data && (
             <div className="pt-2">
-               <h2 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Export</h2>
+               <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Export</h2>
                <div className="flex flex-col gap-2">
-                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-[11px] 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
+                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-xs 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
                    onClick={() => {
                      const selection = window.getSelection()?.toString();
                      let textToCopy = "";
@@ -206,7 +206,7 @@ export default function App() {
                  >
                    <Copy className="w-3.5 h-3.5 2xl:w-4 2xl:h-4 text-gray-400" /> Copy Sequence
                  </button>
-                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-[11px] 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
+                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-xs 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
                    onClick={() => {
                      const seqRaw = reverseComplement ? getReverseComplement(data.baseCalls) : data.baseCalls;
                      const text = `>${fileName}\n${seqRaw}`;
@@ -219,7 +219,7 @@ export default function App() {
                  >
                    <Download className="w-3.5 h-3.5 2xl:w-4 2xl:h-4 text-gray-400" /> Download FASTA
                  </button>
-                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-[11px] 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
+                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-xs 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
                   onClick={() => {
                     const text = reverseComplement ? getReverseComplement(data.baseCalls) : data.baseCalls;
                     const blob = new Blob([text], {type: "text/plain"});
@@ -286,7 +286,7 @@ export default function App() {
 
                {/* File Information Cards */}
                <div className="bg-[#0B0E14] border border-gray-800 rounded-xl p-5 2xl:p-7 transition-all duration-300">
-                 <div className={`flex items-center justify-between text-[12px] 2xl:text-sm font-bold text-gray-400 uppercase tracking-widest ${isFileInfoExpanded ? 'mb-4 2xl:mb-6' : ''}`}>
+                 <div className={`flex items-center justify-between text-xs 2xl:text-sm font-bold text-gray-400 uppercase tracking-widest ${isFileInfoExpanded ? 'mb-4 2xl:mb-6' : ''}`}>
                    <div className="flex items-center gap-2">
                      <svg className="w-4 h-4 2xl:w-5 2xl:h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                      File Information
@@ -355,8 +355,8 @@ function ToggleSetting({ label, subtext, enabled, onChange }: { label: string, s
   return (
     <div className="flex items-center justify-between cursor-pointer group" onClick={onChange}>
       <div className="flex flex-col">
-        <span className="text-[13px] 2xl:text-sm font-semibold text-gray-200 group-hover:text-white transition-colors">{label}</span>
-        {subtext && <span className="text-[10px] 2xl:text-[11px] text-gray-500 leading-tight block mt-0.5">{subtext}</span>}
+        <span className="text-[14px] 2xl:text-[15px] font-semibold text-gray-200 group-hover:text-white transition-colors">{label}</span>
+        {subtext && <span className="text-xs 2xl:text-[13px] text-gray-500 leading-tight block mt-0.5">{subtext}</span>}
       </div>
       <div className={`w-9 h-5 2xl:w-11 2xl:h-6 rounded-full relative transition-colors ${enabled ? 'bg-emerald-500' : 'bg-gray-700'}`}>
         <div className={`absolute top-1 w-3 h-3 2xl:w-4 2xl:h-4 bg-white rounded-full transition-all ${enabled ? 'right-1' : 'left-1'}`}></div>
@@ -369,7 +369,7 @@ function StatCard({ label, value }: { label: string, value: React.ReactNode }) {
   return (
     <div className="bg-[#12161E] rounded-md p-3 2xl:p-4 border border-gray-800/60 flex flex-col gap-1.5 2xl:gap-2">
       <div className="flex items-center gap-1.5">
-        <span className="text-[9px] 2xl:text-[11px] uppercase font-bold text-gray-500 tracking-wider w-full">{label}</span>
+        <span className="text-[10px] 2xl:text-xs uppercase font-bold text-gray-500 tracking-wider w-full">{label}</span>
       </div>
       <div className="text-sm 2xl:text-base font-semibold text-gray-200 truncate" title={typeof value === 'string' ? value : undefined}>{value}</div>
     </div>
