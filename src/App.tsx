@@ -143,7 +143,7 @@ export default function App() {
 
           {data && (
             <div className="pt-2">
-               <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 text-[11px] py-2.5 rounded flex items-center px-4 gap-3 transition-colors font-semibold shadow-sm"
+               <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 text-[11px] 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors font-semibold shadow-sm"
                  onClick={() => {
                    const selection = window.getSelection()?.toString();
                    let seqToBlast = "";
@@ -178,7 +178,7 @@ export default function App() {
             <div className="pt-2">
                <h2 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Export</h2>
                <div className="flex flex-col gap-2">
-                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-[11px] py-2.5 rounded flex items-center px-4 gap-3 transition-colors"
+                 <button className="w-full bg-[#1A1D23] border border-gray-700 hover:border-gray-500 hover:bg-[#1E232A] text-gray-300 text-[11px] 2xl:text-sm py-2.5 2xl:py-3.5 rounded flex items-center px-4 gap-3 transition-colors"
                    onClick={() => {
                      const selection = window.getSelection()?.toString();
                      let textToCopy = "";

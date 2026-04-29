@@ -145,7 +145,7 @@ export function SequenceViewer({
             <div className={`w-8 h-4 2xl:w-10 2xl:h-5 rounded-full relative transition-colors ${reverseComplement ? 'bg-emerald-500' : 'bg-gray-700'}`}>
               <div className={`absolute top-1 w-2 h-2 2xl:w-3 2xl:h-3 bg-white rounded-full transition-all ${reverseComplement ? 'right-1' : 'left-1'}`}></div>
             </div>
-            <span className="text-[10px] sm:text-xs 2xl:text-sm text-gray-400 font-semibold uppercase tracking-wider group-hover:text-gray-200 transition-colors">Reverse Comp.</span>
+            <span className="text-[10px] sm:text-xs 2xl:text-sm text-gray-400 font-semibold uppercase tracking-wider group-hover:text-gray-200 transition-colors">Reverse Complement</span>
           </label>
         </div>
       </div>
