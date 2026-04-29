@@ -245,8 +245,7 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
       })
     },
     name: 'Bases',
-    hoverinfo: 'text',
-    hovertemplate: '<b>%{text}</b><br>Pos: %{x}<extra></extra>'
+    hoverinfo: 'none'
   };
 
   const plotData = [...traces, baseAnnotations] as any;
@@ -297,7 +296,7 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
     shapes: allShapes,
     showlegend: false,
     dragmode: 'pan',
-    hovermode: 'x unified'
+    hovermode: false
   };
 
   return (
