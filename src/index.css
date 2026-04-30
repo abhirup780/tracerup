@@ -30,3 +30,15 @@
     scrollbar-color: #374151 #0D1117;
   }
 }
+
+body.force-pointer .js-plotly-plot .cursor-crosshair,
+body.force-pointer .js-plotly-plot .cursor-pointer,
+body.force-pointer .js-plotly-plot .nsewdrag,
+body.force-pointer .js-plotly-plot .nwdrag,
+body.force-pointer .js-plotly-plot .nedrag,
+body.force-pointer .js-plotly-plot .swdrag,
+body.force-pointer .js-plotly-plot .sedrag,
+body.force-pointer .js-plotly-plot .ewdrag,
+body.force-pointer .js-plotly-plot .nsdrag {
+    cursor: pointer !important;
+}

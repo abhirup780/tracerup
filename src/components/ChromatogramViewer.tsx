@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import Plot from "react-plotly.js";
 import { ABIFData, getIupacCode } from "@/lib/abif-parser";
 import type { Layout } from "plotly.js";
-import { Maximize, Minimize } from "lucide-react";
+import { Maximize, Minimize, AlignJustify, AlignLeft } from "lucide-react";
 
 interface ChromatogramViewerProps {
   data: ABIFData;
@@ -12,17 +12,21 @@ interface ChromatogramViewerProps {
   searchQuery: string;
   reverseComplement: boolean;
   focusedBaseIndex: number | null;
+  onBaseClick?: (index: number) => void;
 }
 
-export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThreshold, searchQuery, reverseComplement, focusedBaseIndex }: ChromatogramViewerProps) {
+export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThreshold, searchQuery, reverseComplement, focusedBaseIndex, onBaseClick }: ChromatogramViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMultiline, setIsMultiline] = useState(false);
   const [xRange, setXRange] = useState<[number, number]>([0, Math.min(data.A.length, 1200)]);
+  const BASES_PER_LINE = 80;
 
   React.useEffect(() => {
     if (focusedBaseIndex !== null && data.peakPositions[focusedBaseIndex] !== undefined) {
       const pos = data.peakPositions[focusedBaseIndex];
       // Zoom around this pos, window of 250 frames
       setXRange([Math.max(0, pos - 125), Math.min(data.A.length, pos + 125)]);
+      setIsMultiline(false);
     }
   }, [focusedBaseIndex, data]);
 
@@ -233,6 +237,7 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
     xaxis: 'x2',
     mode: 'text',
     text: analyzedBases.map(b => b.computedBase),
+    customdata: analyzedBases.map(b => b.index),
     textfont: {
       family: 'monospace',
       size: 11,
@@ -296,12 +301,119 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
     shapes: allShapes,
     showlegend: false,
     dragmode: 'pan',
-    hovermode: false
+    hovermode: 'closest'
+  };
+
+  const handlePlotClick = (e: any) => {
+    if (e.points && e.points.length > 0) {
+        const point = e.points.find((p: any) => p.data.name === 'Bases');
+        if (point && point.customdata !== undefined) {
+             const baseIndex = point.customdata;
+             if (onBaseClick) onBaseClick(baseIndex);
+             const pos = point.x;
+             setXRange([Math.max(0, pos - 125), Math.min(data.A.length, pos + 125)]);
+             setIsMultiline(false);
+        }
+    }
+  };
+
+  const renderContent = () => {
+    if (!isMultiline) {
+       return (
+          <Plot
+            onClick={handlePlotClick}
+            onHover={(e) => {
+               if (e.points && e.points.some((p: any) => p.data.name === 'Bases')) {
+                   document.body.classList.add('force-pointer');
+               }
+            }}
+            onUnhover={() => {
+                document.body.classList.remove('force-pointer');
+            }}
+            data={plotData}
+            layout={layout}
+            onRelayout={(e) => {
+              if (e['xaxis.range[0]'] !== undefined && e['xaxis.range[1]'] !== undefined) {
+                 setXRange([e['xaxis.range[0]'], e['xaxis.range[1]']]);
+              }
+            }}
+            config={{ 
+              responsive: true, 
+              displayModeBar: true,
+              modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
+              displaylogo: false,
+            }}
+            style={{ width: '100%', height: '100%', flex: 1, minHeight: isFullscreen ? '0' : '100%' }}
+            useResizeHandler={true}
+          />
+       );
+    }
+
+    const chunks = [];
+    for (let i = 0; i < analyzedBases.length; i += BASES_PER_LINE) {
+       chunks.push(analyzedBases.slice(i, i + BASES_PER_LINE));
+    }
+
+    const firstChunkStart = Math.max(0, chunks[0][0].position - 20);
+    const firstChunkEnd = chunks[0][chunks[0].length - 1].position + 20;
+    const chunkRangeLength = firstChunkEnd - firstChunkStart;
+
+    return (
+       <div className="flex-1 w-full overflow-y-auto pt-16 pb-4 px-2 sm:px-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+          {chunks.map((chunk, idx) => {
+             const startPos = Math.max(0, chunk[0].position - 20);
+             const endPos = startPos + chunkRangeLength;
+             
+             const chunkShapes = allShapes.filter(s => 
+               s.x0 <= endPos && s.x1 >= startPos
+             );
+             
+             const chunkLayout = {
+                ...layout,
+                dragmode: false,
+                xaxis: {
+                    ...layout.xaxis,
+                    range: [startPos, endPos],
+                    rangeslider: { visible: false },
+                    showticklabels: false,
+                },
+                margin: { t: 5, r: 10, l: 40, b: 5 },
+                shapes: chunkShapes,
+             };
+
+             return (
+                <div key={idx} className="w-full h-[180px] 2xl:h-[220px] mb-4 2xl:mb-6 border-b border-gray-800/50 pb-4 shrink-0">
+                   <div className="text-[10px] text-gray-500 font-mono mb-1 ml-10">Bases {chunk[0].index + 1} - {chunk[chunk.length - 1].index + 1}</div>
+                   <Plot
+                     onClick={handlePlotClick}
+                     onHover={(e) => {
+                        if (e.points && e.points.some((p: any) => p.data.name === 'Bases')) {
+                            document.body.classList.add('force-pointer');
+                        }
+                     }}
+                     onUnhover={() => {
+                         document.body.classList.remove('force-pointer');
+                     }}
+                     data={plotData}
+                     layout={chunkLayout as any}
+                     config={{ 
+                        responsive: true, 
+                        displayModeBar: false,
+                        displaylogo: false,
+                     }}
+                     style={{ width: '100%', height: 'calc(100% - 20px)' }}
+                     useResizeHandler={true}
+                   />
+                </div>
+             );
+          })}
+       </div>
+    );
   };
 
   return (
     <div className={isFullscreen ? "fixed inset-0 z-[100] bg-[#0E1117] flex flex-col p-4 md:p-8" : "w-full flex flex-col min-h-[350px] xl:min-h-[450px] 2xl:min-h-[600px] relative rounded-lg"}>
-      <div className={`w-full h-full flex flex-col relative bg-[#090B0F] border ${isFullscreen ? 'border-gray-700 shadow-2xl flex-1 rounded-xl overflow-hidden' : 'border-gray-800 min-h-[350px] xl:min-h-[450px] 2xl:min-h-[600px] rounded-lg'}`}>
+      <div className={`w-full h-full flex flex-col relative bg-[#090B0F] border ${isFullscreen ? 'border-gray-700 shadow-2xl flex-1 rounded-xl overflow-hidden' : 'border-gray-800 min-h-[350px] xl:min-h-[450px] 2xl:min-h-[600px] rounded-lg overflow-hidden'}`}>
         <div className="absolute top-2 left-2 z-10 flex gap-2">
           <div className="flex items-center gap-2 sm:gap-3 bg-[#0B0E14]/90 backdrop-blur border border-gray-800 px-2 sm:px-3 py-1.5 rounded text-[10px] sm:text-[11px] 2xl:text-xs uppercase font-bold tracking-wider text-gray-400">
              <span className="flex items-center gap-1"><span className="w-2 h-2 2xl:w-2.5 2xl:h-2.5 rounded bg-[#22C55E]"></span>A <span className="lowercase font-normal text-gray-600 hidden sm:inline">(Ade)</span></span>
@@ -311,6 +423,14 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
           </div>
           <button 
             type="button"
+            onClick={() => setIsMultiline(!isMultiline)} 
+            className={`bg-[#0B0E14]/90 backdrop-blur border border-gray-800 p-1.5 2xl:p-2 rounded hover:bg-gray-800 transition-colors cursor-pointer ${isMultiline ? 'text-emerald-400' : 'text-gray-400 hover:text-white'}`}
+            title={isMultiline ? "Single Line View" : "Multiline View"}
+          >
+            {isMultiline ? <AlignLeft className="w-4 h-4 2xl:w-5 2xl:h-5" /> : <AlignJustify className="w-4 h-4 2xl:w-5 2xl:h-5" />}
+          </button>
+          <button 
+            type="button"
             onClick={() => setIsFullscreen(!isFullscreen)} 
             className="bg-[#0B0E14]/90 backdrop-blur border border-gray-800 p-1.5 2xl:p-2 rounded text-gray-400 hover:text-white hover:bg-gray-800 transition-colors cursor-pointer"
             title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
@@ -318,23 +438,7 @@ export function ChromatogramViewer({ data, showQuality, showHeterozygous, hetThr
             {isFullscreen ? <Minimize className="w-4 h-4 2xl:w-5 2xl:h-5" /> : <Maximize className="w-4 h-4 2xl:w-5 2xl:h-5" />}
           </button>
         </div>
-        <Plot
-        data={plotData}
-        layout={layout}
-        onRelayout={(e) => {
-          if (e['xaxis.range[0]'] !== undefined && e['xaxis.range[1]'] !== undefined) {
-             setXRange([e['xaxis.range[0]'], e['xaxis.range[1]']]);
-          }
-        }}
-        config={{ 
-          responsive: true, 
-          displayModeBar: true,
-          modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
-          displaylogo: false,
-        }}
-        style={{ width: '100%', height: '100%', flex: 1, minHeight: isFullscreen ? '0' : '100%' }}
-        useResizeHandler={true}
-      />
+        {renderContent()}
       </div>
     </div>
   );

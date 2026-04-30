@@ -323,6 +323,7 @@ export default function App() {
                     searchQuery={searchQuery}
                     reverseComplement={reverseComplement}
                     focusedBaseIndex={focusedBaseIndex}
+                    onBaseClick={setFocusedBaseIndex}
                   />
                </div>
 
